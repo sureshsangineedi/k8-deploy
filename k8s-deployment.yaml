@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carinfo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: carinfo
+  template:
+    metadata:
+      labels:
+        app: carinfo
+    spec:
+      containers:
+      - name: carinfo
+        image: <DOCKER_USERNAME>/carinfo:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carinfo-service
+spec:
+  selector:
+    app: carinfo
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
